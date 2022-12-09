@@ -1,0 +1,21 @@
+guessing ce=0, cd=1
+ab 0xe0e006f9(32bit) cf
+ab 0xe0e006f9(32bit) cf
+ab 0xe0e0a659(32bit) cf
+ab 0xe0e0a659(32bit) cf
+ab 0xe0e046b9(32bit) cf
+ab 0xe0e046b9(32bit) cf
+ab 0xe0e08679(32bit) cf
+ab 0xe0e08679(32bit) cf
+
+===
+pulse:
+  a: 4468, 4468-4503 mean:4486.50 stdev:13.30 len:8
+  c: 520, 519-555 mean:535.34 stdev:12.89 len:264
+space:
+  b: 4528, 4494-4528 mean:4510.25 stdev:13.27 len:8
+  d: 1717, 1683-1718 mean:1702.63 stdev:13.12 len:112
+  e: 598, 571-598 mean:582.27 stdev:12.65 len:144
+timeout:
+  f: 13751, 12684-13751 mean:13197.00 stdev:475.60 len:8
+===
