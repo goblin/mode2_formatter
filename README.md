@@ -45,7 +45,7 @@ This behaviour can be disabled by commenting out the following block
 in the `print_formatted` function of the `Decoder` class:
 
 ```python
-        if self.guess_one is None: 
+        if self.guess_one is None:
             self.make_guesses(spl)
             print(f'guessing {self.guess_zero}=0, {self.guess_one}=1')
 ```
@@ -62,5 +62,45 @@ function (inside the `format` function of the `Decoder` class).
 
 # Example
 See `examples/samsung_in.txt` for the output of `mode2` for a sample
-output of 4 buttons pressed on a Samsung remote, and
+output of 4 arrow buttons pressed on a Samsung remote, and
 `examples/samsung_out.txt` for the output produced by the formatter.
+
+Here's what to make of it:
+
+1. `guessing ce=0, cd=1` means that a ~535.34µs pulse (`c`),
+followed by a ~582.27µs space (`e`) is guessed to mean `0`
+(because there's more zeroes than ones), and followed by a ~1702.63µs
+space instead (`d`) means `1`. This allows us to set
+`zero` and `one` directives in `lirc.conf`.
+1. Then we see 8 lines representing button press and release
+events, all of them prefixed by `ab` (~4486.50µs pulse followed by
+~4510.25µs space), and suffixed by `cf` (~535.34µs pulse followed by
+~13197.00µs timeout). Hence we can guess the values for `header`,
+`ptrail` and `gap`.
+
+Since the shortest timeout is 12684µs, and the longest pulse/space
+seen is 4528µs, I'm guessing a good value for `gap` will be around
+10000µs.
+
+Having all this information, we can write a `mysamsung.lircd.conf`
+like this:
+
+```
+begin remote
+  name mysamsung
+  bits 32
+  zero 535 582
+  one 535 1702
+  header 4486 4510
+  ptrail 535
+  gap 10000
+  begin codes
+    up 0xe0e006f9
+    left 0xe0e0a659
+    right 0xe0e046b9
+    down 0xe0e08679
+  end codes
+end remote
+```
+
+See `man lircd.conf` for full documentation of that file.
