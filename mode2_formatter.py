@@ -161,6 +161,8 @@ class Decoder:
 def go(sigs):
     dec = Decoder()
     for line in sys.stdin:
+        if 'root' in line:
+            continue
         m = re.fullmatch('^([a-z]*) ([0-9]*)\n', line)
         if m is None:
             raise RuntimeError(f"line {line} didn't match")
