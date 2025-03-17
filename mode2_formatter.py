@@ -161,9 +161,11 @@ class Decoder:
 def go(sigs):
     dec = Decoder()
     for line in sys.stdin:
-        m = re.fullmatch('^([a-z]*) ([0-9]*)\n', line)
+        line = line.strip()
+        m = re.fullmatch('^([a-z]*) ([0-9]*)$', line)
         if m is None:
-            raise RuntimeError(f"line {line} didn't match")
+            print(f"mode2_formatter warning: line '{line}' didn't match, ignoring")
+            continue
         noun, num = m[1], int(m[2])
         dec.feed(sigs.check(noun, num))
         if noun == 'timeout':
